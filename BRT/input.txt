@@ -1,0 +1,7 @@
+compile hello.cpp with g++ as hello 
+compile hello.cpp as hello with gcc
+compile hello.cpp with gcc as hello
+compile hello.cpp with g++ with g++
+run hello with input.txt as hello.out
+run hello as hello.out
+run hello as hello.out with input.txt
