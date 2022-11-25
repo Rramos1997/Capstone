@@ -5,6 +5,13 @@
         #include<iostream>
         #include<cassert>
         #include<vector>
+        #include <unistd.h>
+        #include<stdio.h>
+        #include<sys/types.h>
+        #include<sys/wait.h>
+
+        #include<iostream>
+        
         
         int yylex();
         void yyerror(const char* err);
@@ -12,7 +19,9 @@
         using std::endl;
         using std::stoi;
         using std::cerr;
+        using std::string;
         std::vector<std::string> commands;
+        int index = 0;
         
 %}
 
@@ -37,7 +46,9 @@
 
 %type <union_string> command
 %type <union_string> phrase
+%type <union_string> file
 /*%token T_ERROR
+
 
 
 %token <union_string> T_COMPILER       "compiler"
@@ -60,22 +71,213 @@ T_COMPILE T_FILENAME T_AS T_EXECUTABLE T_WITH T_COMPILER {cout<<"COMPILE "<<*$2<
 */
 
 start_symbol : 
+        //File rule will print the command number and the given command from the file
         file 
         { 
+                //commands[] is a global variable that holds the entire BRT files worth of instructions in a vector
+                pid_t child_pid;
+                int child_status;
+                pid_t tpid, w;
+                
                 for(unsigned i = 0; i<commands.size(); i++){
-                        cout<<commands[i]<<endl;
-                }
+                        
+                        child_pid = fork();
+                        if(child_pid == 0){
+                        
+                        //std::string singleCommandLine = commands[i];
+                        
+                        /*
 
+                        Parse the full command-line to pull each part out and interpret it for execvp
+                        
+                        The find command will search the string for a space and parse each word into a new vector for a single command line
+                        */
+                       std::string singleCommandLine = commands[i];
+                        std::string delimiter = " ";
+                        unsigned j = 0;
+                        std::string wordInCommand;
+                        std::vector<string> commandLine;
+                        std::string comm;
+                        while ((j = singleCommandLine.find(delimiter)) && singleCommandLine.size()>0) {
+                                wordInCommand = singleCommandLine.substr(0, j);
+                                commandLine.push_back(wordInCommand);
+                                cout<<wordInCommand<<endl;
+                                //cout<<singleCommandLine<<endl;
+                                singleCommandLine.erase(0,j+delimiter.length());          
+                        }
+                        /*
+                        Can now access each individual word in the command string line by line in a BRT file
+                        */
+                        comm = commandLine[0];
+                                //If the command begins with "COMPILE"
+                                if(comm ==  "COMPILE")
+                                {
+                                        //const char* compiler;
+                                        const char* execChar;
+                                        std::vector<char*> execCommand;
+                                        //std::vector<const char*> commandChar;
+                                        /*for(unsigned x = 0;x<commandLine.size();x++){
+                                                comChar = commandLine[x].c_str();
+                                                commandChar.push_back(comChar);
+                                        }*/
+                                        /*
+                                        Now check the commandLine vector for what type of compiler is being used and push it into the execvp vector
+                                        */
+                                        unsigned x = 0;
+                                        
+                                        //execCommand.push_back(const_cast<char*>("echo"));
+                                        //execCommand.push_back(const_cast<char*>("echo"));
+                                        while(x<commandLine.size()){
+                                                if(commandLine[x] == "G++"){
+                                                        execCommand.push_back(const_cast<char*>("g++"));
+                                                        break;
+                                                }
+                                                if(commandLine[x] == "GCC"){
+                                                        execCommand.push_back(const_cast<char*>("gcc"));
+                                                        break;
+                                                }
+                                                x++;
+                                        }
+                                        //Add the filename to the execvp vector, will always be after "COMPILE"
+                                        execChar = commandLine[1].c_str();
+                                        execCommand.push_back(const_cast<char*>(execChar));
+                                        x=0;
+                                        /*
+                                                Search the commandLine for 'AS' to see if there should be an output file and push the output file onto the exec vector
+                                        */
+                                        while(x<commandLine.size()){
+                                                if(commandLine[x] == "AS"){
+                                                        execCommand.push_back(const_cast<char*>("-o"));
+                                                        execChar = commandLine[x+1].c_str();
+                                                        execCommand.push_back(const_cast<char*>(execChar));
+                                                        break;
+                                                }
+                                                x++;
+                                        }
+                                        execCommand.push_back(NULL);
+                                        for(unsigned z = 0;z<execCommand.size();z++){
+                                                cout<<execCommand[z]<<" ";
+                                        }
+                                        cout<<endl;
+                                        
+                                        //char **commandV = &execCommand[0];
+                                        //execvp(commandV[0], commandV);
+                                        //child_pid = fork();
+                                        //if(child_pid == 0) {
+                                                execvp(execCommand[0], &execCommand[0]);
+                                                cout<<"Unknown Command\n";
+                                                abort();
+                                        //}
+                                        /*else{
+                                                do {
+                                                        w = waitpid(child_pid, &child_status, WUNTRACED | WCONTINUED);
+                                                        if (w == -1) {
+                                                                perror("waitpid");
+                                                                exit(0);
+                                                        }
+                                                        if (WIFEXITED(child_status)) {
+                                                        printf("exited, status=%d\n", WEXITSTATUS(child_status));
+                                                        }
+                                                }
+                                                        while (!WIFEXITED(child_status) && !WIFSIGNALED(child_status));
+                                                        exit(0);
+           
+                                                //waitpid(child_pid, &child_status, WUNTRACED | WCONTINUED );
+                                                /*pid_t tpid;
+                                                do {
+                                                        tpid = wait(&child_status);
+                                                        if(tpid != child_pid) 
+                                                                //process_terminated(tpid);
+                                                                //exit(0);
+                                                                cout<<"In do loop"<<endl;
+                                                        } 
+                                                while(tpid != child_pid);
+
+                                                return child_status;//
+                                                
+                                        }*/
+                                        
+      
+                                }
+                                else if(comm == "RUN"){
+                                        const char* execChar;
+                                        std::vector<char*> execCommand;
+                                        unsigned x = 0;
+                                        execChar = commandLine[1].c_str();
+                                        execCommand.push_back(const_cast<char*>(execChar));
+                                        while(x<commandLine.size()){
+                                                if(commandLine[x] == "WITH"){
+                                                        execCommand.push_back(const_cast<char*>("<"));
+                                                        execChar = commandLine[x+1].c_str();
+                                                        execCommand.push_back(const_cast<char*>(execChar));
+                                                        break;
+                                                }
+                                                x++;
+                                        
+                                        }
+                                        x = 0;
+                                        while(x<commandLine.size()){
+                                                if(commandLine[x]=="AS"){
+                                                        execCommand.push_back(const_cast<char*>(">"));
+                                                        execChar = commandLine[x+1].c_str();
+                                                        execCommand.push_back(const_cast<char*>(execChar));
+                                                        break;
+                                                }
+                                                x++;
+                                        }
+
+                                        execCommand.push_back(NULL);
+                                        for(unsigned z = 0;z<execCommand.size();z++){
+                                                cout<<execCommand[z]<<" ";
+                                        }
+                                        cout<<endl;
+                                        execvp(execCommand[0], &execCommand[0]);
+                                        cout<<"Unknown Command\n";
+                                        abort();
+
+                                        
+                                }
+                                else
+                                cout<<"DID NOT GO THROUGH COMPILE LOOP"<<endl;
+                        }
+                        else{
+                        cout<<"COMMAND #"<<i+1<<": "<<commands[i]<<endl;
+                        //waitpid(child_pid, &child_status, 0);      
+                        }
+                        /*const char* comChar;
+                        std::vector<const char*> commandChar;
+                        
+                        for(unsigned x = 0;x<commandLine.size();x++){
+                               //cout<<commandLine[x]<<" ";
+                               comChar = commandLine[x].c_str();
+                               commandChar.push_back(comChar);
+                               //cout<<"Char*: "<<commandChar[x]<<" "; 
+                        }
+                        commandChar.push_back(NULL);
+                        cout<<endl;
+                        //std::cout << singleCommand << std::endl;
+                        */
+                       //return 1;
+                }
+                while(w = wait(&child_status) > 0);
         
-        } /*{ cout<<$1<<endl; }*/
+        } 
         ;
 
-file:   command { 
+file:   command_list{}
+        //file command{ 
         
-        commands.push_back(*$1);
-        /*cout<<*$1<<endl;*/
-        }
-        | %empty
+        //commands.push_back(*$1);
+        
+                //cout<<*$1<<endl;
+
+        //}
+        //| command { $$ = new std::string(*$1+" "); }
+        | %empty { exit(0); }
+        ;
+
+command_list: command_list command { commands.push_back(*$2); }
+        | command{ commands.push_back(*$1);}
         ;
 
 //And action to combine commands together
@@ -89,10 +291,10 @@ phrase:
         T_AS T_FILENAME phrase 
         {
                 if($3 == nullptr){
-                        $$ = new std::string("AS "+*$2+" "+"\n");
+                        $$ = new std::string("AS "+*$2+" ");
                 }
                 else{
-                        $$ = new std::string("AS "+*$2+" "+*$3+"\n"); 
+                        $$ = new std::string("AS "+*$2+" "+*$3+" "); 
                 }
                 delete $2;
                 delete $3;
@@ -100,7 +302,7 @@ phrase:
         | T_AS T_EXECUTABLE phrase 
         { 
                 if($3 == nullptr){       
-                        $$ = new std::string("AS "+*$2+"\n");
+                        $$ = new std::string("AS "+*$2+" ");
                 }
                 else{
                         $$ = new std::string("AS "+*$2+" "+*$3+" "); 
@@ -111,7 +313,7 @@ phrase:
         | T_WITH T_GMINMIN phrase 
         { 
                 if($3 == nullptr){
-                        $$ = new std::string("WITH GCC");
+                        $$ = new std::string("WITH GCC ");
                 }
                 else{
                         $$ = new std::string("WITH GCC "+*$3+" "); 
@@ -121,7 +323,7 @@ phrase:
         | T_WITH T_GPLUSPLUS phrase 
         { 
                 if($3 == nullptr){
-                        $$ = new std::string("WITH G++");
+                        $$ = new std::string("WITH G++ ");
                 }
                 else{
                         
@@ -133,7 +335,7 @@ phrase:
         | T_WITH T_FILENAME phrase 
         {
                 if($3 == nullptr){
-                        $$ = new std::string("WITH "+*$2);
+                        $$ = new std::string("WITH "+*$2+" ");
                 }
                 else{
                         $$ = new std::string("WITH "+*$2+" "+*$3+" "); 
@@ -150,24 +352,28 @@ phrase:
 command: 
          T_RUN T_EXECUTABLE phrase
          {
+                std::string executable = "./"+*$2;
                 if($3 == nullptr){
-                        $$ = new std::string("RUN "+*$2+" ");
+                        $$ = new std::string("RUN "+executable+" ");
                 }
                 else
-                        $$ = new std::string("RUN "+*$2+" "+*$3+"\n");
+                        $$ = new std::string("RUN "+executable+" "+*$3+" ");
                 delete $2;
                 delete $3;
          }
-        | T_MOVE T_FILENAME T_TO T_DESTINATION { cout<<"MOVE "<<*$2<<" TO "<<*$4; }
+        | T_MOVE T_FILENAME T_TO T_DESTINATION { $$ = new std::string("MOVE "+*$2+" TO "+*$4+" "); }
+        | T_MOVE T_EXECUTABLE T_TO T_DESTINATION { $$ = new std::string("MOVE "+*$2+" TO "+*$4+" "); }
         | T_COMPILE T_FILENAME phrase 
         {
                 if($3 == nullptr)
                 {
+                        $$ = new std::string("COMPILE "+*$2+" AS "+"a.out");
+                        
                         //executable file is a.out
                 }
                 else
                 {
-                 $$ = new std::string("COMPILE "+*$2+" "+*$3+"\n"); 
+                 $$ = new std::string("COMPILE "+*$2+" "+*$3+" "); 
                  //cerr << "====>"<<*$$<<"<======="<<endl;
                 }
                 delete $2;
@@ -177,16 +383,7 @@ command:
         ;
 
 
-/*cout<<"COMPILE "<<*$2<<" ";*/
-/*compiler: T_GPLUSPLUS {}
-        | T_GMINMIN {}
-        ;
 
-//Filename variable, either a '.' file or an executable
-file_name: T_FILENAME { cout<<*$1<<endl; }
-        | T_EXECUTABLE {}
-        ;
-*/
 
 %%
 

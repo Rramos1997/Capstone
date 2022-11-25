@@ -1,7 +1,6 @@
-compile hello.cpp with g++ as hello 
-compile hello.cpp as hello with gcc
-compile hello.cpp with gcc as hello
-compile hello.cpp with g++ with g++
-run hello with input.txt as hello.out
-run hello as hello.out
-run hello as hello.out with input.txt
+compile ../hello.cpp with g++ AS hello1 
+compile ../hello.cpp with g++ as hello2 
+compile ../hello.cpp as hello3 with g++
+compile ../hello.c as hello4 with gcc 
+compile ../hello.c with gcc as hello5
+compile ../hello.c with gcc 

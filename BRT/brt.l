@@ -9,18 +9,18 @@
 %}
 
 %%
-(as)      { return T_AS; }
-(with)    { return T_WITH; }
-(compile)  { return T_COMPILE;}
-(run)     { return T_RUN; }
-(move)    { return T_MOVE; }
+(as)|(AS)|(As)|(aS)  { return T_AS; }
+(with)|(WITH)|(With)    { return T_WITH; }
+(compile)|(COMPILE)|(Compile)  { return T_COMPILE;}
+(run)|(RUN)|(Run)|(RUn)|(rUN)|(ruN)     { return T_RUN; }
+(move)|(MOVE)|(Move)|(MOve)|(MOVe)    { return T_MOVE; }
 (quit)    { return T_QUIT; }
-(and)     { return T_AND; }
-g\+{2} { return T_GPLUSPLUS; }
-g\c{2} { return T_GMINMIN; }
+(and)|(AND)|(And)    { return T_AND; }
+[gG]\+{2} { return T_GPLUSPLUS; }
+[gG]\c{2} { return T_GMINMIN; }
 [A-Za-z_][A-Za-z_0-9]*  { std::string val = std::string(yytext); val = val.substr(0,val.size()); yylval.union_string = new std::string(val); return T_EXECUTABLE; }
-[A-Za-z_][A-Za-z_0-9]*[\.][a-z][a-z][a-z]  { std::string val = std::string(yytext); val = val.substr(0,val.size()); yylval.union_string = new std::string(val); return T_FILENAME; }
-[\.\/A-Za-z]* { std::string val = std::string(yytext); val = val.substr(0,val.size()); yylval.union_string = new std::string(val); return T_DESTINATION; }
+(\.{1,2}\/)*[a-zA-z]+[a-zA-Z0-9]*\.[a-zA-Z]+[a-zA-Z]*  { std::string val = std::string(yytext); val = val.substr(0,val.size()); yylval.union_string = new std::string(val); return T_FILENAME; }
+(\.{1,2}\/)+[a-zA-z]+[a-zA-Z0-9]*(\/[a-zA-Z0-9]*)*|(\.{1,2})|(\/[a-zA-Z]+)+\/+ { std::string val = std::string(yytext); val = val.substr(0,val.size()); yylval.union_string = new std::string(val); return T_DESTINATION; }
 [ \t\n] /* */
 .
  /*
