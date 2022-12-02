@@ -1,0 +1,2 @@
+move /cfiles/text.txt to movefiles/
+move cfiles/a.cpp to ../movefiles/

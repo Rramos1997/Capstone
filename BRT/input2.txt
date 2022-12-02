@@ -1,1 +1,3 @@
-run hellorun 
+run runtest with runinput.txt as hello.out
+run runtest with runinput.txt
+run runtest
