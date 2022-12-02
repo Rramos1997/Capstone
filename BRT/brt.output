@@ -24,7 +24,7 @@ Grammar
 
    12 command: "run" "executable" phrase
    13        | "compile" filelist phrase
-   14        | "move" "filename" "to" "destination"
+   14        | "move" filename "to" "destination"
    15        | "move" "executable" "to" "destination"
    16        | "quit"
 
@@ -38,7 +38,7 @@ Terminals, with rules where they appear
 
     $end (0) 0
     error (256)
-    "filename" <union_string> (258) 6 10 14 19
+    "filename" <union_string> (258) 6 10 19
     "executable" <union_string> (259) 7 12 15
     "destination" <union_string> (260) 14 15
     "g++" (261) 9
@@ -77,7 +77,7 @@ Nonterminals, with rules where they appear
         on right: 13 17
     filename <union_string> (23)
         on left: 19
-        on right: 17 18
+        on right: 14 17 18
 
 
 State 0
@@ -116,11 +116,13 @@ State 2
 
 State 3
 
-   14 command: "move" • "filename" "to" "destination"
+   14 command: "move" • filename "to" "destination"
    15        | "move" • "executable" "to" "destination"
 
-    "filename"    shift, and go to state 13
-    "executable"  shift, and go to state 14
+    "filename"    shift, and go to state 9
+    "executable"  shift, and go to state 13
+
+    filename  go to state 14
 
 
 State 4
@@ -212,14 +214,14 @@ State 12
 
 State 13
 
-   14 command: "move" "filename" • "to" "destination"
+   15 command: "move" "executable" • "to" "destination"
 
     "to"  shift, and go to state 22
 
 
 State 14
 
-   15 command: "move" "executable" • "to" "destination"
+   14 command: "move" filename • "to" "destination"
 
     "to"  shift, and go to state 23
 
@@ -281,14 +283,14 @@ State 21
 
 State 22
 
-   14 command: "move" "filename" "to" • "destination"
+   15 command: "move" "executable" "to" • "destination"
 
     "destination"  shift, and go to state 29
 
 
 State 23
 
-   15 command: "move" "executable" "to" • "destination"
+   14 command: "move" filename "to" • "destination"
 
     "destination"  shift, and go to state 30
 
@@ -355,16 +357,16 @@ State 28
 
 State 29
 
-   14 command: "move" "filename" "to" "destination" •
+   15 command: "move" "executable" "to" "destination" •
 
-    $default  reduce using rule 14 (command)
+    $default  reduce using rule 15 (command)
 
 
 State 30
 
-   15 command: "move" "executable" "to" "destination" •
+   14 command: "move" filename "to" "destination" •
 
-    $default  reduce using rule 15 (command)
+    $default  reduce using rule 14 (command)
 
 
 State 31

@@ -8,3 +8,12 @@ compile ./testfiles/hello.c with gcc as Hello6
 compile testfiles/hello.c as Hello7 with gcc
 compile testfiles/runtest.cpp as runtest with g++
 compile ../BRT/testfiles/hello.cpp ./testfiles/helper.cpp with g++ as hello8
+move ./hello1 to ./helloexecs/
+move ../BRT/hello2 to ../BRT/helloexecs/
+move ../../Capstone/BRT/hello3 to helloexecs/
+move hello4 to ./helloexecs/
+move ../hello5 to helloexecs/
+move Hello6 to helloexecs/
+move Hello7 to ../BRT/helloexecs/
+move hello8 to helloexecs/
+move a.out to helloexecs/

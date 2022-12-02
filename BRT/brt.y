@@ -269,6 +269,20 @@ start_symbol :
                                         
                                 }
                                 else if(comm == "MOVE"){
+                                        
+                                        unsigned timer=0;
+                                        while(timer<comm.size()){
+                                                cout<<"~";
+                                                //sleep(1);
+                                                
+                                                timer++;
+                                        }
+                                        cout<<endl;
+                                        for(unsigned index = 0;index<commandLine.size();index++){
+                                                        cout<<commandLine[index]<<" ";
+                                        }
+                                        cout<<endl;
+                                        timer=0;
                                         const char* execChar;
                                         std::vector<char*> execCommand;
                                         unsigned x = 0;
@@ -283,9 +297,19 @@ start_symbol :
                                                 }
                                                 x++;
                                         }
+                                        cout<<"COMMAND::";
                                         for(unsigned z = 0;z<execCommand.size();z++){
                                                 cout<<execCommand[z]<<" ";
                                         }
+                                        cout<<endl;
+                                        timer = 0;
+                                        while(timer<comm.size()){
+                                                cout<<"~";
+                                                //sleep(1);
+                                                
+                                                timer++;
+                                        }
+                                        cout<<endl;
                                         execCommand.push_back(NULL);
                                         cout<<endl;
                                         execvp(execCommand[0],&execCommand[0]);
@@ -416,7 +440,7 @@ command:
                 delete $2;
                 delete $3;
         }
-        | T_MOVE T_FILENAME T_TO T_DESTINATION { $$ = new std::string("MOVE "+*$2+" TO "+*$4+" "); }
+        | T_MOVE filename T_TO T_DESTINATION { $$ = new std::string("MOVE "+*$2+" TO "+*$4+" "); }
         | T_MOVE T_EXECUTABLE T_TO T_DESTINATION { $$ = new std::string("MOVE "+*$2+" TO "+*$4+" "); }
         | T_QUIT { exit(0); }
         ;

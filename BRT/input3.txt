@@ -1,2 +1,2 @@
-move /cfiles/text.txt to movefiles/
-move cfiles/a.cpp to ../movefiles/
+move ./cfiles/text.txt to ./movefiles/
+move cfiles/a.cpp to ../BRT/movefiles/
