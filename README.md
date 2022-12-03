@@ -13,10 +13,10 @@ So far the 3 commands this code can run is (COMPILE|RUN|MOVE)
     Run 
     Move 
 
-##  Secondary_Phrases:
-With 
-As 
-To 
+##  Secondary Phrases:
+    With 
+    As
+    To 
 
 ##  Compilers:
      g++ 
