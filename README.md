@@ -6,12 +6,14 @@ So far the 3 commands this code can run is (COMPILE|RUN|MOVE) and it can only co
          compile [list of files] with [compiler] {secondary phrase} {executbale} 
          run [executable] {secondary phrase} {input files} {output file}
          move [file/executable] to [destination]
+         show {details} [destination]
 
 
 ##  Commands: 
     Compile 
     Run 
     Move 
+    Show
 
 ##  Secondary Phrases:
     With 
@@ -21,6 +23,11 @@ So far the 3 commands this code can run is (COMPILE|RUN|MOVE) and it can only co
 ##  Compilers:
      g++ 
      gcc 
+
+## User entered values:
+     filename - Filenames will always end in .[a-z]{1,3}
+     destination - Desinations will always end with a "/"
+     executable - Executables will always end in just a letter
 
 Supports using full filepath for destination and files/executables.
 
@@ -36,6 +43,7 @@ Supports using full filepath for destination and files/executables.
      compile hello2.cpp ./helperfile/helper.cpp with g++ as hello2
      move helperfile/helper.cpp to ./
      run hello1
+     show ./
 ###     
 ### 
 ## ~$ ./BRT < input1.txt
@@ -43,7 +51,7 @@ Supports using full filepath for destination and files/executables.
 
 
 ##     Current Working Directory--
-                          ./hello1
+                         ./hello1
                          ./hello.cpp
                          ./hello2.cpp
                          ./helper.cpp
