@@ -8,19 +8,19 @@ So far the 3 commands this code can run is (COMPILE|RUN|MOVE)
          move [file/executable] to [destination]
 
 
-##  Commands: <br />
-      Compile <br />
-    Run <br />
-    Move <br />
+##  Commands: 
+    Compile 
+    Run 
+    Move 
 
 ##  Secondary Phrases:
-   With <br />
-   As <br />
-   To <br />
+   With 
+   As 
+   To 
 
 ##  Compilers:
-     ^g++ <br />
-     ^gcc <br />
+     g++ 
+     gcc 
 
 Supports using full filepath for destination and files/executables.
 
