@@ -10,18 +10,18 @@ So far the 3 commands this code can run is (COMPILE|RUN|MOVE)
 
 
 * ###  Commands:
-#### **   ^Compile
-###### **   ^Run
-###### **   ^Move
+** ####    ^Compile
+** ######    ^Run
+** ######    ^Move
 
-##### * Secondary Phrases:
-##### ** ^With
-##### **   ^As
-##### **   ^To
+* #####  Secondary Phrases:
+** #####  ^With
+** #####    ^As
+** #####    ^To
 
-##### * Compilers:
-##### **   ^g++
-##### **   ^gcc
+* #####  Compilers:
+** #####    ^g++
+** #####    ^gcc
 
 Supports using full filepath for destination and files/executables.
 
