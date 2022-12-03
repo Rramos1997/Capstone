@@ -1,10 +1,10 @@
-compile ../hello.cpp with g++ AS hello1 
+compile ../../Capstone/hello.cpp with g++ AS hello1 
 compile ../hello.cpp with g++ as hello2 
 compile ../hello.cpp as hello3 with g++
 compile ../hello.c as hello4 with gcc 
 compile ../hello.c with gcc as ../hello5
 compile ../hello.c with gcc 
 compile ./testfiles/hello.c with gcc as Hello6
-compile testfiles/hello.c as Hello7 with gcc
+compile ../../Capstone/BRT/testfiles/hello.c as Hello7 with gcc
 compile testfiles/runtest.cpp as runtest with g++
 compile ../BRT/testfiles/hello.cpp ./testfiles/helper.cpp with g++ as hello8

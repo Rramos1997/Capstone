@@ -17,3 +17,6 @@ move Hello6 to helloexecs/
 move Hello7 to ../BRT/helloexecs/
 move hello8 to helloexecs/
 move a.out to helloexecs/
+run ./helloexecs/hello1
+move runtest to ./helloexecs/
+run ./helloexecs/runtest with runinput.txt as hello.out

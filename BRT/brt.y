@@ -5,11 +5,12 @@
         #include<iostream>
         #include<cassert>
         #include<vector>
-        #include <unistd.h>
+        #include<unistd.h>
         #include<stdio.h>
         #include<sys/types.h>
+        #include<ctype.h>
         #include<sys/wait.h>
-
+        #include<stdlib.h>
         #include<iostream>
         
         
@@ -80,7 +81,10 @@ start_symbol :
                 pid_t child_pid;
                 int child_status;
                 pid_t tpid, w;
-                
+                unsigned totalCommands = commands.size();
+                cout<<"///////////////////////////////////////////////////\t\t\n/// \t "
+                <<totalCommands<<" TOTAL COMMANDS"<<
+                "\t\t       ///\n/////////////////////////////////////////////////\n";
                 for(unsigned i = 0; i<commands.size(); i++){
                         
                         child_pid = fork();
@@ -101,7 +105,7 @@ start_symbol :
                         std::vector<string> commandLine;
                         std::string comm;
 
-                        cout<<"--------------------------------\n""Running Command "<<i+1<<":\t\t|\n"<<"--------------------------------"<<endl;
+                        cout<<"--------------------------------\n""Running Command "<<i+1<<"/"<<totalCommands<<":\t\t|\n"<<"--------------------------------"<<endl;
 
                         while ((j = singleCommandLine.find(delimiter)) && singleCommandLine.size()>0) {
                                 wordInCommand = singleCommandLine.substr(0, j);
@@ -118,17 +122,17 @@ start_symbol :
                                 if(comm ==  "COMPILE")
                                 {       
                                         unsigned timer=0;
-                                        while(timer<comm.size()){
+                                       /* while(timer<comm.size()){
                                                 cout<<"~";
                                                 //sleep(1);
                                                 
                                                 timer++;
-                                        }
-                                        cout<<endl;
+                                        }*/
+                                        /*cout<<endl;
                                         for(unsigned index = 0;index<commandLine.size();index++){
                                                         cout<<commandLine[index]<<" ";
                                         }
-                                        cout<<endl;
+                                        cout<<endl;*/
                                         timer=0;
                                         
                                         const char* execChar;
@@ -167,6 +171,7 @@ start_symbol :
                                                 Search the commandLine for 'AS' to see if there should be an output 
                                                 file and push the output file onto the exec vector
                                         */
+                                        x=0;
                                         while(x<commandLine.size()){
                                                 if(commandLine[x] == "AS"){
                                                         execCommand.push_back(const_cast<char*>("-o"));
@@ -176,17 +181,18 @@ start_symbol :
                                                 }
                                                 x++;
                                         }
+                                        cout<<"\n\n";
                                         cout<<"COMMAND::";
                                         for(unsigned z = 0;z<execCommand.size();z++){
                                                 cout<<execCommand[z]<<" ";
                                         }
                                         cout<<endl;
-                                        while(timer<comm.size()){
+                                        /*while(timer<comm.size()){
                                                 cout<<"~";
                                                 //sleep(1);
                                                 
                                                 timer++;
-                                        }
+                                        }*/
                                         cout<<endl;
                                         execCommand.push_back(NULL);
                                         
@@ -231,10 +237,11 @@ start_symbol :
                                 else if(comm == "RUN"){
                                         const char* execChar;
                                         std::vector<char*> execCommand;
-
+                                        const char* executable;
                                         unsigned x = 0;
                                         execChar = commandLine[1].c_str();
                                         execCommand.push_back(const_cast<char*>(execChar));
+                                        executable = execChar;
                                         while(x<commandLine.size()){
                                                 if(commandLine[x] == "WITH"){
                                                         execCommand.push_back(const_cast<char*>("<"));
@@ -255,13 +262,14 @@ start_symbol :
                                                 }
                                                 x++;
                                         }
+                                        cout<<"\n\n";
                                         for(unsigned z = 0;z<execCommand.size();z++){
                                                 cout<<execCommand[z]<<" ";
                                         }
                                         execCommand.push_back(NULL);
                                         
-                                        cout<<endl;
-                                        if(execvp(execCommand[0], &execCommand[0])==0){
+                                        cout<<"\n\n";
+                                        if(execvp(executable, &execCommand[0])==-1){
                                                 cout<<"Unsuccessful execvp() call.\n";
                                                 abort();
                                         }
@@ -271,16 +279,16 @@ start_symbol :
                                 else if(comm == "MOVE"){
                                         
                                         unsigned timer=0;
-                                        while(timer<comm.size()){
+                                        /*while(timer<comm.size()){
                                                 cout<<"~";
                                                 //sleep(1);
                                                 
                                                 timer++;
-                                        }
+                                        }*/
                                         cout<<endl;
-                                        for(unsigned index = 0;index<commandLine.size();index++){
+                                        /*for(unsigned index = 0;index<commandLine.size();index++){
                                                         cout<<commandLine[index]<<" ";
-                                        }
+                                        }*/
                                         cout<<endl;
                                         timer=0;
                                         const char* execChar;
@@ -303,12 +311,12 @@ start_symbol :
                                         }
                                         cout<<endl;
                                         timer = 0;
-                                        while(timer<comm.size()){
+                                        /*while(timer<comm.size()){
                                                 cout<<"~";
-                                                //sleep(1);
+                                                
                                                 
                                                 timer++;
-                                        }
+                                        }*/
                                         cout<<endl;
                                         execCommand.push_back(NULL);
                                         cout<<endl;
@@ -325,13 +333,14 @@ start_symbol :
                         //cout<<"COMMAND #"<<i+1<<": "<<commands[i]<<endl;
                         //Waitpid here will execute commands in order
                         waitpid(child_pid, &child_status, 0);     
-
+                        
                         }
                         
                 }
-                //while(w = wait(&child_status) > 0);
-                //waitpid(child_pid, &child_status, 0);
-        
+                cout<<"///////////////////////////////////////////////////\t\t\n/// \t "
+                <<" ALL COMMANDS COMPLETE"<<
+                "\t\t       ///\n/////////////////////////////////////////////////\n";
+                
         } 
         ;
 
