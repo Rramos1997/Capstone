@@ -451,7 +451,7 @@ command:
         }
         | T_MOVE filename T_TO T_DESTINATION { $$ = new std::string("MOVE "+*$2+" TO "+*$4+" "); }
         | T_MOVE T_EXECUTABLE T_TO T_DESTINATION { $$ = new std::string("MOVE "+*$2+" TO "+*$4+" "); }
-        | T_QUIT { exit(0); }
+        | T_QUIT { exit(1); }
         ;
 
 filelist:
