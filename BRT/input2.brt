@@ -1,6 +1,5 @@
-run helloexecs/runtest with runinput.txt as hello.out
+run executables/runtest with runinput.txt as hello.out
 compile testfiles/runtest.cpp with g++ as ./runtest
 run runtest with runinput.txt
 run runtest
-MOVE runtest to ./helloexecs/
 run Hello7

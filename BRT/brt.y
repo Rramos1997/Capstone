@@ -46,12 +46,19 @@
 %token T_AND "and"
 %token T_SHOW "show"
 %token T_DETAILS "details"
+%token T_DELETE "delete"
+%token T_DIRECTORY "directory"
+%token T_LEFT_BRACE "["
+%token T_RIGHT_BRACE "]"
 
 %type <union_string> command
 %type <union_string> phrase
 %type <union_string> file
 %type <union_string> filelist
 %type <union_string> filename
+%type <union_string> execlist
+%type <union_string> executable
+
 /*%token T_ERROR
 
 
@@ -100,7 +107,7 @@ start_symbol :
                         
                         The find command will search the string for a space and parse each word into a new vector for a single command line
                         */
-                       std::string singleCommandLine = commands[i];
+                        std::string singleCommandLine = commands[i];
                         std::string delimiter = " ";
                         unsigned j = 0;
                         std::string wordInCommand;
@@ -124,19 +131,7 @@ start_symbol :
                                 if(comm ==  "COMPILE")
                                 {       
                                         unsigned timer=0;
-                                       /* while(timer<comm.size()){
-                                                cout<<"~";
-                                                //sleep(1);
-                                                
-                                                timer++;
-                                        }*/
-                                        /*cout<<endl;
-                                        for(unsigned index = 0;index<commandLine.size();index++){
-                                                        cout<<commandLine[index]<<" ";
-                                        }
-                                        cout<<endl;*/
                                         timer=0;
-                                        
                                         const char* execChar;
                                         std::vector<char*> execCommand;
                                         /*
@@ -189,12 +184,6 @@ start_symbol :
                                                 cout<<execCommand[z]<<" ";
                                         }
                                         cout<<endl;
-                                        /*while(timer<comm.size()){
-                                                cout<<"~";
-                                                //sleep(1);
-                                                
-                                                timer++;
-                                        }*/
                                         cout<<endl;
                                         execCommand.push_back(NULL);
                                         
@@ -205,36 +194,6 @@ start_symbol :
                                                 else
                                                         cout<<"Failure.\n";
                                                 abort();
-                                        /*else{
-                                                do {
-                                                        w = waitpid(child_pid, &child_status, WUNTRACED | WCONTINUED);
-                                                        if (w == -1) {
-                                                                perror("waitpid");
-                                                                exit(0);
-                                                        }
-                                                        if (WIFEXITED(child_status)) {
-                                                        printf("exited, status=%d\n", WEXITSTATUS(child_status));
-                                                        }
-                                                }
-                                                        while (!WIFEXITED(child_status) && !WIFSIGNALED(child_status));
-                                                        exit(0);
-           
-                                                //waitpid(child_pid, &child_status, WUNTRACED | WCONTINUED );
-                                                /*pid_t tpid;
-                                                do {
-                                                        tpid = wait(&child_status);
-                                                        if(tpid != child_pid) 
-                                                                //process_terminated(tpid);
-                                                                //exit(0);
-                                                                cout<<"In do loop"<<endl;
-                                                        } 
-                                                while(tpid != child_pid);
-
-                                                return child_status;//
-                                                
-                                        }*/
-                                        
-      
                                 }
                                 else if(comm == "RUN"){
                                         const char* execChar;
@@ -279,18 +238,8 @@ start_symbol :
                                         
                                 }
                                 else if(comm == "MOVE"){
-                                        
                                         unsigned timer=0;
-                                        /*while(timer<comm.size()){
-                                                cout<<"~";
-                                                //sleep(1);
-                                                
-                                                timer++;
-                                        }*/
                                         cout<<endl;
-                                        /*for(unsigned index = 0;index<commandLine.size();index++){
-                                                        cout<<commandLine[index]<<" ";
-                                        }*/
                                         cout<<endl;
                                         timer=0;
                                         const char* execChar;
@@ -313,15 +262,9 @@ start_symbol :
                                         }
                                         cout<<endl;
                                         timer = 0;
-                                        /*while(timer<comm.size()){
-                                                cout<<"~";
-                                                
-                                                
-                                                timer++;
-                                        }*/
+                                        cout<<endl;
                                         cout<<endl;
                                         execCommand.push_back(NULL);
-                                        cout<<endl;
                                         execvp(execCommand[0],&execCommand[0]);
                                         cout<<"Unsuccessful execvp() call.\n";
                                         abort();
@@ -360,8 +303,48 @@ start_symbol :
                                         cout<<"Unsuccessful execvp() call.\n";
                                         abort();
                                 }
+                                else if(comm == "DELETE"){
+                                        const char* execChar;
+                                        std::vector<char*> execCommand;
+                                        bool delDir = false;
+                                        execCommand.push_back(const_cast<char*>("rm"));
+                                        unsigned x = 0;
+                                        if(commandLine[1]=="DIR"){
+                                                execCommand.push_back(const_cast<char*>("-r"));
+                                                execChar = commandLine[2].c_str();
+                                                execCommand.push_back(const_cast<char*>(execChar));
+                                                cout<<"\n\n";
+                                                cout<<"COMMAND::";
+                                                for(unsigned z = 0;z<execCommand.size();z++){
+                                                        cout<<execCommand[z]<<" ";
+                                                }
+                                                cout<<"\n\n";
+                                                execCommand.push_back(NULL);
+                                                execvp(execCommand[0],&execCommand[0]);
+                                                cout<<"Unsuccessful execvp call.\n";
+                                                abort();
+                                        }
+                                        else{
+                                                x = 1;
+                                                while(x<commandLine.size()){
+                                                        execChar = commandLine[x].c_str();
+                                                        execCommand.push_back(const_cast<char*>(execChar));
+                                                        x++;
+                                                }
+                                                cout<<"\n\n";
+                                                cout<<"COMMAND::";
+                                                for(unsigned z = 0;z<execCommand.size();z++){
+                                                        cout<<execCommand[z]<<" ";
+                                                }
+                                                cout<<"\n\n";
+                                                execCommand.push_back(NULL);
+                                                execvp(execCommand[0],&execCommand[0]);
+                                                cout<<"Unsuccessful execvp call.\n";
+                                                abort();
+                                        }
+                                }
                                 else
-                                cout<<"Unknown Command: Commands are Compile/Run/Move"<<endl;
+                                cout<<"Unknown Command: Commands are Compile/Run/Move/Show/Delete"<<endl;
                         }
                         else{
                         //cout<<"COMMAND #"<<i+1<<": "<<commands[i]<<endl;
@@ -484,9 +467,12 @@ command:
                 delete $3;
         }
         | T_MOVE filename T_TO T_DESTINATION { $$ = new std::string("MOVE "+*$2+" TO "+*$4+" "); }
-        | T_MOVE T_EXECUTABLE T_TO T_DESTINATION { $$ = new std::string("MOVE "+*$2+" TO "+*$4+" "); }
+        | T_MOVE executable T_TO T_DESTINATION { $$ = new std::string("MOVE "+*$2+" TO "+*$4+" "); }
         | T_SHOW T_DETAILS T_DESTINATION { $$ = new std::string("SHOW "+*$3+" DETAILS ");}
         | T_SHOW T_DESTINATION { $$ = new std::string("SHOW "+*$2+" ");}
+        | T_DELETE execlist { $$ = new std::string("DELETE "+*$2+" ");}
+        | T_DELETE filelist { $$ = new std::string("DELETE "+*$2+" ");}
+        | T_DELETE T_DIRECTORY T_DESTINATION { $$ = new std::string("DELETE DIR "+*$3+" ");}
         | T_QUIT { exit(1); }
         ;
 
@@ -505,7 +491,14 @@ filename:
         T_FILENAME{$$=$1;}
 ;
 
+execlist:
+        executable execlist { if($2==nullptr) $$ = new std::string(*$1); else {$$=new std::string(*$1+" "+*$2+" ");}}
+        | executable {$$ = new std::string(*$1);}
+        ;
 
+executable:
+        T_EXECUTABLE{$$=$1;}
+        ;
 %%
 
 int main(int argc, char** argv)

@@ -8,15 +8,15 @@ compile ./testfiles/hello.c with gcc as Hello6
 compile testfiles/hello.c as Hello7 with gcc
 compile testfiles/runtest.cpp as runtest with g++
 compile ../BRT/testfiles/hello.cpp ./testfiles/helper.cpp with g++ as hello8
-move ./hello1 to ./helloexecs/
-move ../BRT/hello2 to ../BRT/helloexecs/
-move ../../Capstone/BRT/hello3 to helloexecs/
-move hello4 to ./helloexecs/
-move ../hello5 to helloexecs/
-move Hello6 to helloexecs/
-move Hello7 to ../BRT/helloexecs/
-move hello8 to helloexecs/
-move a.out to helloexecs/
-run ./helloexecs/hello1
-move runtest to ./helloexecs/
-run ./helloexecs/runtest with runinput.txt as hello.out
+move ./hello1 to ./executables/
+move ../BRT/hello2 to ../BRT/executables/
+move ../../Capstone/BRT/hello3 to executables/
+move hello4 to ./executables/
+move ../hello5 to executables/
+move Hello6 to executables/
+move Hello7 to ../BRT/executables/
+move hello8 to executables/
+move a.out to executables/
+run ./executables/hello1
+move runtest to ./executables/
+run ./executables/runtest with runinput.txt as hello.out

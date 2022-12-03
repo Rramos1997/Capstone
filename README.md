@@ -7,6 +7,7 @@ So far the 3 commands this code can run is (COMPILE|RUN|MOVE) and it can only co
          run [executable] {secondary phrase} {input files} {output file}
          move [file/executable] to [destination]
          show {details} [destination]
+         delete {dir [destination]} {[files/executables]}
 
 
 ##  Commands: 
@@ -14,6 +15,7 @@ So far the 3 commands this code can run is (COMPILE|RUN|MOVE) and it can only co
     Run 
     Move 
     Show
+    Delete
 
 ##  Secondary Phrases:
     With 

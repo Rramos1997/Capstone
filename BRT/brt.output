@@ -1,6 +1,8 @@
 Terminals unused in grammar
 
     "and"
+    "["
+    "]"
 
 
 Grammar
@@ -25,24 +27,32 @@ Grammar
    12 command: "run" "executable" phrase
    13        | "compile" filelist phrase
    14        | "move" filename "to" "destination"
-   15        | "move" "executable" "to" "destination"
+   15        | "move" executable "to" "destination"
    16        | "show" "details" "destination"
    17        | "show" "destination"
-   18        | "quit"
+   18        | "delete" execlist
+   19        | "delete" filelist
+   20        | "delete" "directory" "destination"
+   21        | "quit"
 
-   19 filelist: filename filelist
-   20         | filename
+   22 filelist: filename filelist
+   23         | filename
 
-   21 filename: "filename"
+   24 filename: "filename"
+
+   25 execlist: executable execlist
+   26         | executable
+
+   27 executable: "executable"
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
     error (256)
-    "filename" <union_string> (258) 6 10 21
-    "executable" <union_string> (259) 7 12 15
-    "destination" <union_string> (260) 14 15 16 17
+    "filename" <union_string> (258) 6 10 24
+    "executable" <union_string> (259) 7 12 27
+    "destination" <union_string> (260) 14 15 16 17 20
     "g++" (261) 9
     "gcc" (262) 8
     "compile" (263) 13
@@ -51,37 +61,47 @@ Terminals, with rules where they appear
     "run" (266) 12
     "move" (267) 14 15
     "to" (268) 14 15
-    "quit" (269) 18
+    "quit" (269) 21
     "and" (270)
     "show" (271) 16 17
     "details" (272) 16
+    "delete" (273) 18 19 20
+    "directory" (274) 20
+    "[" (275)
+    "]" (276)
 
 
 Nonterminals, with rules where they appear
 
-    $accept (18)
+    $accept (22)
         on left: 0
-    start_symbol (19)
+    start_symbol (23)
         on left: 1
         on right: 0
-    file <union_string> (20)
+    file <union_string> (24)
         on left: 2 3
         on right: 1
-    command_list (21)
+    command_list (25)
         on left: 4 5
         on right: 2 4
-    phrase <union_string> (22)
+    phrase <union_string> (26)
         on left: 6 7 8 9 10 11
         on right: 6 7 8 9 10 12 13
-    command <union_string> (23)
-        on left: 12 13 14 15 16 17 18
+    command <union_string> (27)
+        on left: 12 13 14 15 16 17 18 19 20 21
         on right: 4 5
-    filelist <union_string> (24)
-        on left: 19 20
-        on right: 13 19
-    filename <union_string> (25)
-        on left: 21
-        on right: 14 19 20
+    filelist <union_string> (28)
+        on left: 22 23
+        on right: 13 19 22
+    filename <union_string> (29)
+        on left: 24
+        on right: 14 22 23
+    execlist <union_string> (30)
+        on left: 25 26
+        on right: 18 25
+    executable <union_string> (31)
+        on left: 27
+        on right: 15 25 26
 
 
 State 0
@@ -93,48 +113,50 @@ State 0
     "move"     shift, and go to state 3
     "quit"     shift, and go to state 4
     "show"     shift, and go to state 5
+    "delete"   shift, and go to state 6
 
     $default  reduce using rule 3 (file)
 
-    start_symbol  go to state 6
-    file          go to state 7
-    command_list  go to state 8
-    command       go to state 9
+    start_symbol  go to state 7
+    file          go to state 8
+    command_list  go to state 9
+    command       go to state 10
 
 
 State 1
 
    13 command: "compile" • filelist phrase
 
-    "filename"  shift, and go to state 10
+    "filename"  shift, and go to state 11
 
-    filelist  go to state 11
-    filename  go to state 12
+    filelist  go to state 12
+    filename  go to state 13
 
 
 State 2
 
    12 command: "run" • "executable" phrase
 
-    "executable"  shift, and go to state 13
+    "executable"  shift, and go to state 14
 
 
 State 3
 
    14 command: "move" • filename "to" "destination"
-   15        | "move" • "executable" "to" "destination"
+   15        | "move" • executable "to" "destination"
 
-    "filename"    shift, and go to state 10
-    "executable"  shift, and go to state 14
+    "filename"    shift, and go to state 11
+    "executable"  shift, and go to state 15
 
-    filename  go to state 15
+    filename    go to state 16
+    executable  go to state 17
 
 
 State 4
 
-   18 command: "quit" •
+   21 command: "quit" •
 
-    $default  reduce using rule 18 (command)
+    $default  reduce using rule 21 (command)
 
 
 State 5
@@ -142,25 +164,41 @@ State 5
    16 command: "show" • "details" "destination"
    17        | "show" • "destination"
 
-    "destination"  shift, and go to state 16
-    "details"      shift, and go to state 17
+    "destination"  shift, and go to state 18
+    "details"      shift, and go to state 19
 
 
 State 6
 
-    0 $accept: start_symbol • $end
+   18 command: "delete" • execlist
+   19        | "delete" • filelist
+   20        | "delete" • "directory" "destination"
 
-    $end  shift, and go to state 18
+    "filename"    shift, and go to state 11
+    "executable"  shift, and go to state 15
+    "directory"   shift, and go to state 20
+
+    filelist    go to state 21
+    filename    go to state 13
+    execlist    go to state 22
+    executable  go to state 23
 
 
 State 7
+
+    0 $accept: start_symbol • $end
+
+    $end  shift, and go to state 24
+
+
+State 8
 
     1 start_symbol: file •
 
     $default  reduce using rule 1 (start_symbol)
 
 
-State 8
+State 9
 
     2 file: command_list •
     4 command_list: command_list • command
@@ -170,270 +208,326 @@ State 8
     "move"     shift, and go to state 3
     "quit"     shift, and go to state 4
     "show"     shift, and go to state 5
+    "delete"   shift, and go to state 6
 
     $default  reduce using rule 2 (file)
 
-    command  go to state 19
+    command  go to state 25
 
 
-State 9
+State 10
 
     5 command_list: command •
 
     $default  reduce using rule 5 (command_list)
 
 
-State 10
-
-   21 filename: "filename" •
-
-    $default  reduce using rule 21 (filename)
-
-
 State 11
 
-   13 command: "compile" filelist • phrase
+   24 filename: "filename" •
 
-    "with"  shift, and go to state 20
-    "as"    shift, and go to state 21
-
-    $default  reduce using rule 11 (phrase)
-
-    phrase  go to state 22
+    $default  reduce using rule 24 (filename)
 
 
 State 12
 
-   19 filelist: filename • filelist
-   20         | filename •
+   13 command: "compile" filelist • phrase
 
-    "filename"  shift, and go to state 10
+    "with"  shift, and go to state 26
+    "as"    shift, and go to state 27
 
-    $default  reduce using rule 20 (filelist)
+    $default  reduce using rule 11 (phrase)
 
-    filelist  go to state 23
-    filename  go to state 12
+    phrase  go to state 28
 
 
 State 13
 
-   12 command: "run" "executable" • phrase
+   22 filelist: filename • filelist
+   23         | filename •
 
-    "with"  shift, and go to state 20
-    "as"    shift, and go to state 21
+    "filename"  shift, and go to state 11
 
-    $default  reduce using rule 11 (phrase)
+    $default  reduce using rule 23 (filelist)
 
-    phrase  go to state 24
+    filelist  go to state 29
+    filename  go to state 13
 
 
 State 14
 
-   15 command: "move" "executable" • "to" "destination"
+   12 command: "run" "executable" • phrase
 
-    "to"  shift, and go to state 25
+    "with"  shift, and go to state 26
+    "as"    shift, and go to state 27
+
+    $default  reduce using rule 11 (phrase)
+
+    phrase  go to state 30
 
 
 State 15
 
-   14 command: "move" filename • "to" "destination"
+   27 executable: "executable" •
 
-    "to"  shift, and go to state 26
+    $default  reduce using rule 27 (executable)
 
 
 State 16
+
+   14 command: "move" filename • "to" "destination"
+
+    "to"  shift, and go to state 31
+
+
+State 17
+
+   15 command: "move" executable • "to" "destination"
+
+    "to"  shift, and go to state 32
+
+
+State 18
 
    17 command: "show" "destination" •
 
     $default  reduce using rule 17 (command)
 
 
-State 17
+State 19
 
    16 command: "show" "details" • "destination"
 
-    "destination"  shift, and go to state 27
+    "destination"  shift, and go to state 33
 
 
-State 18
+State 20
+
+   20 command: "delete" "directory" • "destination"
+
+    "destination"  shift, and go to state 34
+
+
+State 21
+
+   19 command: "delete" filelist •
+
+    $default  reduce using rule 19 (command)
+
+
+State 22
+
+   18 command: "delete" execlist •
+
+    $default  reduce using rule 18 (command)
+
+
+State 23
+
+   25 execlist: executable • execlist
+   26         | executable •
+
+    "executable"  shift, and go to state 15
+
+    $default  reduce using rule 26 (execlist)
+
+    execlist    go to state 35
+    executable  go to state 23
+
+
+State 24
 
     0 $accept: start_symbol $end •
 
     $default  accept
 
 
-State 19
+State 25
 
     4 command_list: command_list command •
 
     $default  reduce using rule 4 (command_list)
 
 
-State 20
+State 26
 
     8 phrase: "with" • "gcc" phrase
     9       | "with" • "g++" phrase
    10       | "with" • "filename" phrase
 
-    "filename"  shift, and go to state 28
-    "g++"       shift, and go to state 29
-    "gcc"       shift, and go to state 30
+    "filename"  shift, and go to state 36
+    "g++"       shift, and go to state 37
+    "gcc"       shift, and go to state 38
 
 
-State 21
+State 27
 
     6 phrase: "as" • "filename" phrase
     7       | "as" • "executable" phrase
 
-    "filename"    shift, and go to state 31
-    "executable"  shift, and go to state 32
+    "filename"    shift, and go to state 39
+    "executable"  shift, and go to state 40
 
 
-State 22
+State 28
 
    13 command: "compile" filelist phrase •
 
     $default  reduce using rule 13 (command)
 
 
-State 23
+State 29
 
-   19 filelist: filename filelist •
+   22 filelist: filename filelist •
 
-    $default  reduce using rule 19 (filelist)
+    $default  reduce using rule 22 (filelist)
 
 
-State 24
+State 30
 
    12 command: "run" "executable" phrase •
 
     $default  reduce using rule 12 (command)
 
 
-State 25
-
-   15 command: "move" "executable" "to" • "destination"
-
-    "destination"  shift, and go to state 33
-
-
-State 26
+State 31
 
    14 command: "move" filename "to" • "destination"
 
-    "destination"  shift, and go to state 34
+    "destination"  shift, and go to state 41
 
 
-State 27
+State 32
+
+   15 command: "move" executable "to" • "destination"
+
+    "destination"  shift, and go to state 42
+
+
+State 33
 
    16 command: "show" "details" "destination" •
 
     $default  reduce using rule 16 (command)
 
 
-State 28
+State 34
+
+   20 command: "delete" "directory" "destination" •
+
+    $default  reduce using rule 20 (command)
+
+
+State 35
+
+   25 execlist: executable execlist •
+
+    $default  reduce using rule 25 (execlist)
+
+
+State 36
 
    10 phrase: "with" "filename" • phrase
 
-    "with"  shift, and go to state 20
-    "as"    shift, and go to state 21
+    "with"  shift, and go to state 26
+    "as"    shift, and go to state 27
 
     $default  reduce using rule 11 (phrase)
 
-    phrase  go to state 35
+    phrase  go to state 43
 
 
-State 29
+State 37
 
     9 phrase: "with" "g++" • phrase
 
-    "with"  shift, and go to state 20
-    "as"    shift, and go to state 21
+    "with"  shift, and go to state 26
+    "as"    shift, and go to state 27
 
     $default  reduce using rule 11 (phrase)
 
-    phrase  go to state 36
+    phrase  go to state 44
 
 
-State 30
+State 38
 
     8 phrase: "with" "gcc" • phrase
 
-    "with"  shift, and go to state 20
-    "as"    shift, and go to state 21
+    "with"  shift, and go to state 26
+    "as"    shift, and go to state 27
 
     $default  reduce using rule 11 (phrase)
 
-    phrase  go to state 37
+    phrase  go to state 45
 
 
-State 31
+State 39
 
     6 phrase: "as" "filename" • phrase
 
-    "with"  shift, and go to state 20
-    "as"    shift, and go to state 21
+    "with"  shift, and go to state 26
+    "as"    shift, and go to state 27
 
     $default  reduce using rule 11 (phrase)
 
-    phrase  go to state 38
+    phrase  go to state 46
 
 
-State 32
+State 40
 
     7 phrase: "as" "executable" • phrase
 
-    "with"  shift, and go to state 20
-    "as"    shift, and go to state 21
+    "with"  shift, and go to state 26
+    "as"    shift, and go to state 27
 
     $default  reduce using rule 11 (phrase)
 
-    phrase  go to state 39
+    phrase  go to state 47
 
 
-State 33
-
-   15 command: "move" "executable" "to" "destination" •
-
-    $default  reduce using rule 15 (command)
-
-
-State 34
+State 41
 
    14 command: "move" filename "to" "destination" •
 
     $default  reduce using rule 14 (command)
 
 
-State 35
+State 42
+
+   15 command: "move" executable "to" "destination" •
+
+    $default  reduce using rule 15 (command)
+
+
+State 43
 
    10 phrase: "with" "filename" phrase •
 
     $default  reduce using rule 10 (phrase)
 
 
-State 36
+State 44
 
     9 phrase: "with" "g++" phrase •
 
     $default  reduce using rule 9 (phrase)
 
 
-State 37
+State 45
 
     8 phrase: "with" "gcc" phrase •
 
     $default  reduce using rule 8 (phrase)
 
 
-State 38
+State 46
 
     6 phrase: "as" "filename" phrase •
 
     $default  reduce using rule 6 (phrase)
 
 
-State 39
+State 47
 
     7 phrase: "as" "executable" phrase •
 

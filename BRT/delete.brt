@@ -1,0 +1,6 @@
+delete hello1
+DELETE ../hello5
+remove hello2 
+delete ./hello3 ./hello4 
+remove ../BRT/Hello6 Hello7 hello8 runtest
+delete ./trash/junk1.cpp ./trash/junk2.c ./trash/junk3.cpp a.out
