@@ -10,6 +10,8 @@
 
 %%
 
+(DETAILS)|(Details)|(details)|(-v)|(verbose)  { return T_DETAILS; }
+(show)|(Show)|(SHOW)    {return T_SHOW; }
 (to)|(TO)     {return T_TO; }
 (as)|(AS)|(As)|(aS)  { return T_AS; }
 (with)|(WITH)|(With)    { return T_WITH; }

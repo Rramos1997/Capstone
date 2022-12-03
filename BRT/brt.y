@@ -43,7 +43,9 @@
 %token T_MOVE   "move"
 %token T_TO     "to"
 %token T_QUIT "quit"
-%token T_AND
+%token T_AND "and"
+%token T_SHOW "show"
+%token T_DETAILS "details"
 
 %type <union_string> command
 %type <union_string> phrase
@@ -326,6 +328,38 @@ start_symbol :
 
                                         
                                 }
+                                else if(comm == "SHOW"){
+                                        const char* execChar;
+                                        std::vector<char*> execCommand;
+                                        unsigned x = 0;
+                                        bool verbose = false;
+                                        execCommand.push_back(const_cast<char*>("ls"));
+                                        while(x<commandLine.size()){
+                                                if(commandLine[x] == "DETAILS"){
+                                                        execCommand.push_back(const_cast<char*>("-la"));
+                                                        execChar = commandLine[x-1].c_str();
+                                                        execCommand.push_back(const_cast<char*>(execChar));
+                                                        verbose = true;
+                                                        break;
+                                                }
+                                                x++;
+                                        }
+                                        if(verbose == false){
+                                                execChar = commandLine[1].c_str();
+                                                execCommand.push_back(const_cast<char*>(execChar));
+                                        }
+                                        
+                                        cout<<"\n\n";
+                                        cout<<"COMMAND::";
+                                        for(unsigned z = 0;z<execCommand.size();z++){
+                                                cout<<execCommand[z]<<" ";
+                                        }
+                                        cout<<"\n\n";
+                                        execCommand.push_back(NULL);
+                                        execvp(execCommand[0],&execCommand[0]);
+                                        cout<<"Unsuccessful execvp() call.\n";
+                                        abort();
+                                }
                                 else
                                 cout<<"Unknown Command: Commands are Compile/Run/Move"<<endl;
                         }
@@ -451,6 +485,8 @@ command:
         }
         | T_MOVE filename T_TO T_DESTINATION { $$ = new std::string("MOVE "+*$2+" TO "+*$4+" "); }
         | T_MOVE T_EXECUTABLE T_TO T_DESTINATION { $$ = new std::string("MOVE "+*$2+" TO "+*$4+" "); }
+        | T_SHOW T_DETAILS T_DESTINATION { $$ = new std::string("SHOW "+*$3+" DETAILS ");}
+        | T_SHOW T_DESTINATION { $$ = new std::string("SHOW "+*$2+" ");}
         | T_QUIT { exit(1); }
         ;
 
@@ -468,6 +504,8 @@ filelist:
 filename:
         T_FILENAME{$$=$1;}
 ;
+
+
 %%
 
 int main(int argc, char** argv)

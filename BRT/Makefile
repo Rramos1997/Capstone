@@ -16,4 +16,4 @@ hellorun: runtest.cpp
 	g++ runtest.cpp -o hellorun
 
 clean:
-	rm -f BRT lex.yy.c brt.tab.h brt.tab.c helloexecs/hello* a.out Hello* hello* runtest
+	rm -f BRT lex.yy.c brt.tab.h brt.tab.c helloexecs/hello* helloexecs/Hello* helloexecs/a.out helloexecs/runtest a.out Hello* hello* runtest ../hello5

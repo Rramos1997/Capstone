@@ -1,0 +1,6 @@
+show ./
+show ./testfiles/
+show ../BRT/helloexecs/
+show details ./
+show -v ../
+show verbose ./

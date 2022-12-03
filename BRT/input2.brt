@@ -3,3 +3,4 @@ compile testfiles/runtest.cpp with g++ as ./runtest
 run runtest with runinput.txt
 run runtest
 MOVE runtest to ./helloexecs/
+run Hello7
