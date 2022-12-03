@@ -1,10 +1,6 @@
 # BRT   (Bash Readable Textfile)
-<<<<<<< HEAD
-An interpretive language to simplify bash terminal commands
-=======
 An interpretive language to simplify bash terminal commands.
 So far the 3 commands this code can run is (COMPILE|RUN|MOVE) and it can only compile .cpp or .c files
->>>>>>> aee6a2bad5851acefddfa94a4ce1d4121075b94d
 
 ## Syntax: 
          compile [list of files] with [compiler] {secondary phrase} {executbale} 
