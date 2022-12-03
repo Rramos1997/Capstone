@@ -3,7 +3,8 @@
 
 So far the 3 commands this code can run is (COMPILE|RUN|MOVE)
 
-### Syntax: compile [list of files] with [compiler] {secondary phrase} {executbale} 
+### Syntax: 
+####         compile [list of files] with [compiler] {secondary phrase} {executbale} 
 ####         run [executable] {secondary phrase} {input files} {output file}
 ####         move [file/executable] to [destination]
 
