@@ -9,15 +9,15 @@ So far the 3 commands this code can run is (COMPILE|RUN|MOVE)
 ####         move [file/executable] to [destination]
 
 
-* ###  Commands:
-** ####    ^Compile
-** ######    ^Run
-** ######    ^Move
+* ###  Commands: <br />
+** ####    Compile <br />
+** ######    Run
+** ######    Move
 
 * #####  Secondary Phrases:
-** #####  ^With
-** #####    ^As
-** #####    ^To
+** #####  With
+** #####    As
+** #####    To
 
 * #####  Compilers:
 ** #####    ^g++
