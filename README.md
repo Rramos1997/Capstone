@@ -13,7 +13,7 @@ So far the 3 commands this code can run is (COMPILE|RUN|MOVE)
     Run 
     Move 
 
-##  Secondary Phrases:
+##  Secondary_Phrases:
 With 
 As 
 To 
