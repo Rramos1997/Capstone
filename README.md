@@ -14,9 +14,9 @@ So far the 3 commands this code can run is (COMPILE|RUN|MOVE)
     Move 
 
 ##  Secondary Phrases:
-   With 
-   As 
-   To 
+With 
+As 
+To 
 
 ##  Compilers:
      g++ 
