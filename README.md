@@ -10,9 +10,9 @@ So far the 3 commands this code can run is (COMPILE|RUN|MOVE)
 
 
 * ###  Commands: <br />
-** ####    Compile <br />
-** ######    Run
-** ######    Move
+**     Compile <br />
+**     Run
+**     Move
 
 * #####  Secondary Phrases:
 ** #####  With
