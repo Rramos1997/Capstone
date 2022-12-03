@@ -40,12 +40,12 @@ Supports using full filepath for destination and files/executables.
 ###     
 ### 
 ## ~$ ./BRT < input1.txt
-####     Hello World!
+### *    Hello World!
 ###
 ###
-###     Current Working Directory--
-##### **                         ./hello1
-##### **                        ./hello.cpp
-##### **                        ./hello2.cpp
-##### **                        ./helper.cpp
-##### **                        ./helperfile/
+##     Current Working Directory--
+### **                         ./hello1
+### **                        ./hello.cpp
+### **                        ./hello2.cpp
+### **                        ./helper.cpp
+### **                        ./helperfile/
