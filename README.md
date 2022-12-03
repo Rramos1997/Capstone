@@ -9,8 +9,8 @@ So far the 3 commands this code can run is (COMPILE|RUN|MOVE)
 ####         move [file/executable] to [destination]
 
 
-##### * Commands:
-###### **   ^Compile
+### * Commands:
+#### **   ^Compile
 ###### **   ^Run
 ###### **   ^Move
 
