@@ -1,5 +1,5 @@
 # BRT   (Bash Readable Textfile)
-## An interpretive language to simplify bash terminal commands
+An interpretive language to simplify bash terminal commands
 
 So far the 3 commands this code can run is (COMPILE|RUN|MOVE)
 
@@ -34,18 +34,18 @@ Supports using full filepath for destination and files/executables.
 ##### ***                            ./helper.cpp
 ###                         
 ### input1.brt
-##### **    compile hello2.cpp ./helperfile/helper.cpp with g++ as hello2
-##### **    move helperfile/helper.cpp to ./
-##### **    run hello1
+compile hello2.cpp ./helperfile/helper.cpp with g++ as hello2
+move helperfile/helper.cpp to ./
+run hello1
 ###     
 ### 
 ## ~$ ./BRT < input1.txt
-####     Hello World!
+Hello World!
 ###
 ###
 ###     Current Working Directory--
-##### **                         ./hello1
-##### **                        ./hello.cpp
-##### **                        ./hello2.cpp
-##### **                        ./helper.cpp
-##### **                        ./helperfile/
+                         ./hello1
+                        ./hello.cpp
+                        ./hello2.cpp
+                        ./helper.cpp
+                        ./helperfile/
