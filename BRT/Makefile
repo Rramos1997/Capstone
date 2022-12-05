@@ -17,6 +17,7 @@ hellorun: runtest.cpp
 
 clean:
 	-mkdir executables
+	-mkdir files
 	touch ./trash/junk1.cpp ./trash/junk2.c ./trash/junk3.cpp
 	rm -f BRT lex.yy.c brt.tab.h brt.tab.c a.out Hello* hello* runtest ../hello5 executables/*
 	

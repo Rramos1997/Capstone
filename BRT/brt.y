@@ -12,6 +12,8 @@
         #include<sys/wait.h>
         #include<stdlib.h>
         #include<iostream>
+        #include<fcntl.h>
+        #include<cstring>
         
         
         int yylex();
@@ -22,7 +24,7 @@
         using std::cerr;
         using std::string;
         std::vector<std::string> commands;
-        int index = 0;
+        //int index = 0;
         
 %}
 
@@ -198,16 +200,30 @@ start_symbol :
                                 else if(comm == "RUN"){
                                         const char* execChar;
                                         std::vector<char*> execCommand;
-                                        const char* executable;
+                                        std::vector<char*> command;
+                                        char* executable;
+                                        const char* inputfile = nullptr;
+                                        const char* outputfile = nullptr;
                                         unsigned x = 0;
+                                        int dup_result;
+
                                         execChar = commandLine[1].c_str();
+                                        executable = (char*)malloc(std::strlen(commandLine[1].c_str())+1);
+                                        strcpy(executable,commandLine[1].c_str());
+                                        executable = const_cast<char*>(executable);
+                                        command.push_back(executable);
+                                        int exec_result=-1;
+                                        
                                         execCommand.push_back(const_cast<char*>(execChar));
-                                        executable = execChar;
+                                        //executable = const_cast<char*>(execChar);
                                         while(x<commandLine.size()){
                                                 if(commandLine[x] == "WITH"){
                                                         execCommand.push_back(const_cast<char*>("<"));
                                                         execChar = commandLine[x+1].c_str();
                                                         execCommand.push_back(const_cast<char*>(execChar));
+                                                        inputfile = commandLine[x+1].c_str();
+                                                        //inputfile = const_cast<char*>(inputfile);
+                                                        //command.push_back(const_cast<char*>(inputfile));
                                                         break;
                                                 }
                                                 x++;
@@ -219,20 +235,44 @@ start_symbol :
                                                         execCommand.push_back(const_cast<char*>(">"));
                                                         execChar = commandLine[x+1].c_str();
                                                         execCommand.push_back(const_cast<char*>(execChar));
+                                                        outputfile = commandLine[x+1].c_str();
+                                                        //outputfile = const_cast<char*>(outputfile);
+                                                        //command.push_back(const_cast<char*>(outputfile));
                                                         break;
                                                 }
                                                 x++;
                                         }
+                                        
                                         cout<<"\n\n";
+                                        cout<<"COMMAND::";
                                         for(unsigned z = 0;z<execCommand.size();z++){
                                                 cout<<execCommand[z]<<" ";
                                         }
                                         execCommand.push_back(NULL);
+                                        command.push_back(nullptr);
                                         
                                         cout<<"\n\n";
-                                        if(execvp(executable, &execCommand[0])==-1){
+                                        
+                                        if(inputfile != nullptr){
+                                        //These lines will redirect the input
+                                                int input_fd=open(inputfile, O_RDONLY);
+                                                assert(input_fd!=-1);
+                                                dup_result=dup2(input_fd, 0);//make stdin now the same as input from inputfile
+                                                assert(dup_result!=-1);
+
+                                        }
+                                        if(outputfile != nullptr){
+                                        //These lines will redirect the output
+                                        int output_fd=open(outputfile, O_WRONLY|O_CREAT);
+                                                assert(output_fd!=-1);//just me ensuring there are no issues
+                                                dup_result=dup2(output_fd, 1);//make stdout now the same as output to outputfile
+                                                assert(dup_result!=-1);//just me ensuring there are no issues
+                                        }
+                                        //char* command[2] = {executable,nullptr};
+                                        
+                                        if(execvp(command[0], &command[0])){
                                                 cout<<"Unsuccessful execvp() call.\n";
-                                                abort();
+                                                assert(exec_result!=-1);
                                         }
 
                                         
@@ -349,7 +389,7 @@ start_symbol :
                         else{
                         //cout<<"COMMAND #"<<i+1<<": "<<commands[i]<<endl;
                         //Waitpid here will execute commands in order
-                        waitpid(child_pid, &child_status, 0);     
+                        waitpid(child_pid, &child_status, WUNTRACED | WCONTINUED);     
                         
                         }
                         

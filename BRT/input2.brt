@@ -3,3 +3,4 @@ compile testfiles/runtest.cpp with g++ as ./runtest
 run runtest with runinput.txt
 run runtest
 run Hello7
+run Hello7 as hello2.out
