@@ -58,6 +58,7 @@ Supports using full filepath for destination and files/executables.
 
 ##     Current Working Directory--
                          ./hello1
+                         ./hello2
                          ./hello.cpp
                          ./hello2.cpp
                          ./helper.cpp
