@@ -3,13 +3,17 @@ An interpretive language to simplify bash terminal commands.
 So far the 3 commands this code can run is (COMPILE|RUN|MOVE) and it can only compile .cpp or .c files
 
 ## Syntax: 
-         compile [list of files] with [compiler] {secondary phrase} {executbale} 
+         compile [list of files] with [compiler] {secondary phrase} {executabale} 
          run [executable] {secondary phrase} {input files} {output file}
          move [file/executable] to [destination]
          show {details} [destination]
          delete {dir [destination]} {[files/executables]}
 
-
+## User Input:
+    Destination - Any string beginning with a letter and ending with a '/'. Includes "./" and "../"
+    File - Any string beginning with a letter and ending in '.' and 1-3 letters. (brt.l, brt.py, brt.brt)
+    Executable - Any string beginning with a letter
+    
 ##  Commands: 
     Compile 
     Run 
